@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @Eyobayafet
 - 👀 I’m interested in ...full stack development 
-- 🌱 I’m currently learning ... javascript and front end web development projects. 
+- 🌱 I’m currently learning ... javascript and front end web development. 
 
 
 <!---
