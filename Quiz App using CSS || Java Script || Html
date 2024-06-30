@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz app</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "poppins", "sans-serif";
+        box-sizing: border-box;
+      }
+      body {
+        background: #001e4d;
+      }
+      .app {
+        background: #fff;
+        width: 90%;
+        max-width: 600px;
+        margin: 100px auto 0;
+        border-radius: 10px;
+        padding: 30px;
+      }
+      .app h1 {
+        font-size: 35px;
+        color: #000000;
+        font-weight: 100;
+        border-bottom: 2px solid #333;
+        padding-bottom: 30px;
+        font-family: impact;
+        letter-spacing: 0.7px;
+        text-align: center;
+      }
+      .quiz {
+        padding: 30px 0;
+        min-height: 400px;
+      }
+      .quiz h2 {
+        font-size: 18px;
+        color: #001e4d;
+        font-weight: 600;
+      }
+      .btn {
+        background: #fff;
+        color: #222;
+        font-weight: 500;
+        width: 100%;
+        border: 1px solid #222;
+        padding: 10px;
+        margin: 10px 0;
+        text-align: left;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.5s;
+      }
+      .btn:hover:not([disabled]) {
+        background: #222;
+        color: #fff;
+      }
+      .btn:disabled {
+        cursor: no-drop;
+      }
+      #next-btn {
+        background: #001e4d;
+        color: #fff;
+        font-weight: 500;
+        border: 0;
+        padding: 10px;
+        margin: 20px auto 0;
+        border-radius: 4px;
+        cursor: pointer;
+        display: block;
+        width: 200px;
+      }
+      .correct {
+        background: #9aeabc;
+      }
+      .incorrect {
+        background: #ff9393;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <h1>Maya Tutorials</h1>
+      <h2>
+        These are just sample questions. For the full content, join our Telegram
+        channel: @mayatutorials19bot.
+      </h2>
+      <div class="quiz">
+        <h2 id="question">Questions goes here</h2>
+        <div id="answer-buttons">
+          <button class="btn">Answer 1</button>
+          <button class="btn">Answer 2</button>
+          <button class="btn">Answer 3</button>
+          <button class="btn">Answer 4</button>
+        </div>
+        <button id="next-btn">Next</button>
+      </div>
+    </div>
+    <script>
+      const questions = [
+        {
+          question:
+            "Geography: The large planet is called pangaea, the whole water body together is called ___________.",
+          answers: [
+            { text: "The great ocean", correct: false },
+            { text: "punimania", correct: false },
+            { text: "Panthalassa", correct: true },
+            { text: "The early pacific", correct: false },
+          ],
+        },
+        {
+          question:
+            "Geography: The major geological event of paleozoic era was dedudarion.(𝑓𝑟𝑜𝑚 𝑚𝑖𝑑 𝑒𝑥𝑎𝑚𝑠)",
+          answers: [
+            { text: "True", correct: true },
+            { text: "False", correct: false },
+          ],
+        },
+        {
+          question:
+            "Geography: One of the following option has good potential for oil and gas deposits?",
+          answers: [
+            { text: "Precambrian rocks", correct: false },
+            { text: "Cenozoic rocks", correct: false },
+            { text: "Paleozoic rocks", correct: false },
+            { text: "Mesozoic era", correct: true },
+            { text: "None", correct: false },
+          ],
+        },
+        {
+          question:
+            "Geography: Which one of the following is true from the following?",
+          answers: [
+            {
+              text: "The most lowland place in ethiopian is the gambela and gumuz sinks",
+              correct: false,
+            },
+            {
+              text: "The Ethiopian lanform is characterized by great diversity",
+              correct: true,
+            },
+            {
+              text: "50% of Ethiopia is covered with lowlands",
+              correct: false,
+            },
+            { text: "All are correct", correct: false },
+          ],
+        },
+        {
+          question:
+            "Geography: Which river has invaluable importance for somali people economy?",
+          answers: [
+            { text: "Omo", correct: false },
+            { text: "Nile", correct: false },
+            { text: "Wabishebelle", correct: true },
+            { text: "Awash", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic: The word philosophy is first originated from__________.",
+          answers: [
+            { text: "Aristotle", correct: true },
+            { text: "Veencent berry", correct: false },
+            { text: "Socrates", correct: false },
+            { text: "sigmund fraud", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic: Which field of philosophy deals with the nature of realityor existence?(𝑚𝑖𝑑 𝑒𝑥𝑎𝑚)",
+          answers: [
+            { text: "Meta physics", correct: true },
+            { text: "Epistemmology", correct: false },
+            { text: "Axiology", correct: false },
+            { text: "Logic", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic:  The clarification and analysis of terms and statements is the objective of philosophy in general and logic in particular.(𝑓𝑖𝑛𝑎𝑙 𝑒𝑥𝑎𝑚𝑠)",
+          answers: [
+            { text: "True", correct: true },
+            { text: "False", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic: 'Viruses are a cellular entities too small to be seen with a light microscope. They are composed of a nucleic acid and a few proteins. Viruses replicate themselves and display other properties of living organisms only when they have invaded living cells. Indeed, some viruses can be crystallized and stored in a container on a shelf for years, but they retain the capacity to invade cells and cause disease' this statement is a type of:",
+          answers: [
+            { text: "Argument", correct: false },
+            { text: "Expository", correct: true },
+            { text: "Illustritive", correct: false },
+            { text: "Explanation", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic: A stipulative definition can be either true or false",
+          answers: [
+            { text: "True", correct: false },
+            { text: "False", correct: true },
+          ],
+        },
+        {
+          question:
+            "Logic: Gravity means a force that results from the universal attraction that every particle of matter has for every other particle, and which varies directly with the mass of the particles and inversely with thesquare of the distance between them.",
+          answers: [
+            { text: "Precising", correct: false },
+            { text: "Theoretical", correct: true },
+            { text: "Stipulative", correct: false },
+            { text: "Persuasive", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic:  Identify the fallacy in the following statement: Nobody has been able to prove that ghosts don't exist, so they must exist.(from final exams)",
+          answers: [
+            { text: "Appeal to pity", correct: false },
+            { text: "Appeal to ignorance", correct: true },
+            { text: "Appeal to people", correct: false },
+            { text: "Appeal to force", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic:  Identify the fallacy in the following statement: Proponents of climate change simply want us to stop driving cars and start living in caves.",
+          answers: [
+            { text: "Straw man", correct: true },
+            { text: "Post hoc", correct: false },
+            { text: "False dichotomy", correct: false },
+            { text: "Missing the point", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic: All of us cant be famous, because all of us can't be well known. Thi statement commits a fallcy of:",
+          answers: [
+            { text: "Ad hominem", correct: false },
+            { text: "False cause", correct: false },
+            { text: "Begging the question", correct: true },
+            { text: "Red herring", correct: false },
+          ],
+        },
+        {
+          question:
+            "Logic: The word philosophy is first originated from__________.",
+          answers: [
+            { text: "Socrates", correct: false },
+            { text: "Venct berry", correct: false },
+            { text: "", correct: false },
+            { text: "", correct: true },
+          ],
+        },
+        {
+          question:
+            "Logic: God exists because the Bible says so, and the Bible is the word of God. This statement is an example of which fallacy?",
+          answers: [
+            { text: "To quoque", correct: false },
+            { text: "Unqualified authority", correct: false },
+            { text: "Bandwagon", correct: false },
+            { text: "Appeal to force", correct: false },
+            { text: "Begging the question", correct: true },
+          ],
+        },
+        {
+          question:
+            "Psychology: A coach who tries to get a player to come closer and closer to a particular movement needed in the sport is probably using:(from mid exam)",
+          answers: [
+            { text: "Negative reinforcement", correct: false },
+            { text: "Shaping", correct: false },
+            { text: "Punishment", correct: false },
+            { text: "Vicarious reinforcement", correct: false },
+          ],
+        },
+        {
+          question:
+            "Psychology: A coach who tries to get a player to come closer and closer to a particular movement needed in the sport is probably using:(from mid exam)",
+          answers: [
+            { text: "Fixed interval", correct: true },
+            { text: "Variable interval", correct: false },
+            { text: " Fixed ratio", correct: false },
+            { text: "Variable ratio", correct: false },
+          ],
+        },
+        {
+          question:
+            "Psychology: The Atkinson-Shiffrin model describes:  Human memory as consisting of three distinguishable kinds of memory, with each one representing a stage through which information passes in a sequential way.",
+          answers: [
+            { text: "True", correct: true },
+            { text: "False", correct: false },
+          ],
+        },
+        {
+          question:
+            "Psychology: What is the term for the process of forgetting information because it is no longer used or referenced?",
+          answers: [
+            { text: "ENcoding failure", correct: false },
+            { text: "Retrival failure", correct: false },
+            { text: "Memory decay", correct: false },
+            { text: "Decay theory", correct: true },
+          ],
+        },
+        {
+          question:
+            "Psychology: Yafet always feels like he is never included in the group activities or social events. he has become depressed and lonely. According to maslow's, ehich catagory of need has not been fulfilled in this case?",
+          answers: [
+            { text: "Self acualization", correct: false },
+            { text: "Safty need", correct: false },
+            { text: "Esteem needs", correct: false },
+            { text: "Love and belongingnees", correct: true },
+          ],
+        },
+        {
+          question:
+            "English 1:  I am sorry Mr. Green is out at the moment. Would you like to _______ a message for him?(from final exam)",
+          answers: [
+            { text: "Make", correct: false },
+            { text: "Leave", correct: true },
+            { text: "Do", correct: false },
+            { text: "Give", correct: false },
+          ],
+        },
+        {
+          question:
+            "English 1: My grandpa was a _______ smoker, so few people were surprised when he died of oral cancer.(from final exams)",
+          answers: [
+            { text: "Serial", correct: false },
+            { text: "Heavy", correct: false },
+            { text: "Big", correct: false },
+            { text: "Great", correct: true },
+          ],
+        },
+        {
+          question:
+            "English 1: Yesterday, we __________ football after class.(from KDU final exams)",
+          answers: [
+            { text: "Play", correct: false },
+            { text: "Played", correct: true },
+            { text: "Have played", correct: false },
+            { text: "Will play", correct: false },
+          ],
+        },
+        {
+          question:
+            "English 1: After John _________ the film on TV, he planned to go for a walk.(from final exams)",
+          answers: [
+            { text: "Saw", correct: false },
+            { text: "Had seen", correct: true },
+            { text: "Had been seen", correct: false },
+            { text: "Has been", correct: false },
+          ],
+        },
+      ];
+
+      const questionElement = document.getElementById("question");
+      const answerButtons = document.getElementById("answer-buttons");
+      const nextButton = document.getElementById("next-btn");
+
+      let currentQuestionIndex = 0;
+      let score = 0;
+
+      function startQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        nextButton.innerHTML = "Next";
+        showQuestion();
+      }
+
+      function showQuestion() {
+        resetState();
+        let currentQuestion = questions[currentQuestionIndex];
+        let questionNo = currentQuestionIndex + 1;
+        questionElement.innerHTML =
+          questionNo + ". " + currentQuestion.question;
+
+        currentQuestion.answers.forEach((answer) => {
+          const button = document.createElement("button");
+          button.innerHTML = answer.text;
+          button.classList.add("btn");
+          answerButtons.appendChild(button);
+          if (answer.correct) {
+            button.dataset.correct = answer.correct;
+          }
+          button.addEventListener("click", selectAnswer);
+        });
+      }
+
+      function resetState() {
+        nextButton.style.display = "none";
+        while (answerButtons.firstChild) {
+          answerButtons.removeChild(answerButtons.firstChild);
+        }
+      }
+
+      function selectAnswer(e) {
+        const selectedBtn = e.target;
+        const isCorrect = selectedBtn.dataset.correct === "true";
+        if (isCorrect) {
+          selectedBtn.classList.add("correct");
+          score++;
+        } else {
+          selectedBtn.classList.add("incorrect");
+        }
+        Array.from(answerButtons.children).forEach((button) => {
+          if (button.dataset.correct === "true") {
+            button.classList.add("correct");
+          }
+          button.disabled = true;
+        });
+        nextButton.style.display = "block";
+      }
+
+      function showScore() {
+        resetState();
+        questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+        nextButton.innerHTML = "Play Again";
+        nextButton.style.display = "block";
+      }
+
+      function handleNextButton() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+          showQuestion();
+        } else {
+          showScore();
+        }
+      }
+
+      nextButton.addEventListener("click", () => {
+        if (currentQuestionIndex < questions.length) {
+          handleNextButton();
+        } else {
+          startQuiz();
+        }
+      });
+
+      startQuiz();
+    </script>
+  </body>
+</html>
